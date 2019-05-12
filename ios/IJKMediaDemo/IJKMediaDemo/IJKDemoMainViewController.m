@@ -23,6 +23,7 @@
 #import "IJKDemoLocalFolderViewController.h"
 #import "IJKDemoSampleViewController.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "IJKMultiVideoViewController.h"
 
 @interface IJKDemoMainViewController () <UITableViewDataSource, UITableViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
@@ -163,6 +164,10 @@
             [IJKVideoViewController presentFromViewController:self withTitle:historyItem.title URL:historyItem.url completion:^{
                 [self.navigationController popViewControllerAnimated:NO];
             }];
+
+//            [IJKMultiVideoViewController presentFromViewController:self withTitle:historyItem.title URL:historyItem.url completion:^{
+//                [self.navigationController popViewControllerAnimated:NO];
+//            }];
         } break;
             
         default:
