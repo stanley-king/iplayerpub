@@ -48,6 +48,11 @@
     [options setFormatOptionIntValue:1                  forKey:@"reconnect"];
     [options setFormatOptionIntValue:30 * 1000 * 1000   forKey:@"timeout"];
     [options setFormatOptionValue:@"ijkplayer"          forKey:@"user-agent"];
+
+//    [options setFormatOptionIntValue:1024*1024*10 forKey:@"probesize"];
+    [options setFormatOptionIntValue:100L forKey:@"analyzemaxduration"];
+    [options setFormatOptionIntValue:1L forKey:@"analyzeduration"];
+
     options.showHudView   = NO;
 
     return options;

@@ -187,10 +187,10 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
 
         if (options == nil)
             options = [IJKFFOptions optionsByDefault];
-
-        // IJKFFIOStatRegister(IJKFFIOStatDebugCallback);
-        // IJKFFIOStatCompleteRegister(IJKFFIOStatCompleteDebugCallback);
-
+#ifdef DEBUG
+        IJKFFIOStatRegister(IJKFFIOStatDebugCallback);
+        IJKFFIOStatCompleteRegister(IJKFFIOStatCompleteDebugCallback);
+#endif
         // init fields
         _scalingMode = IJKMPMovieScalingModeAspectFit;
         _shouldAutoplay = YES;
@@ -204,6 +204,7 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
         // init player
         _mediaPlayer = ijkmp_ios_create(media_player_msg_loop);
         _msgPool = [[IJKFFMoviePlayerMessagePool alloc] init];
+
         IJKWeakHolder *weakHolder = [IJKWeakHolder new];
         weakHolder.object = self;
 
@@ -1407,13 +1408,35 @@ static int onInjectTcpIOControl(IJKFFMoviePlayerController *mpc, id<IJKMediaUrlO
     assert(sizeof(AVAppTcpIOControl) == data_size);
 
     switch (type) {
+        case IJKMediaEvent_WillHttpOpen:
+            NSLog( @"%s:%s",__func__,"IJKMediaEvent_WillHttpOpen");
+            break;
+        case IJKMediaEvent_DidHttpOpen:
+            NSLog( @"%s:%s",__func__,"IJKMediaEvent_DidHttpOpen");
+            break;
+        case IJKMediaEvent_WillHttpSeek:
+            NSLog( @"%s:%s",__func__,"IJKMediaEvent_WillHttpSeek");
+            break;
+        case IJKMediaEvent_DidHttpSeek:
+            NSLog( @"%s:%s",__func__,"IJKMediaEvent_DidHttpSeek");
+            break;
         case IJKMediaCtrl_WillTcpOpen:
-
+            NSLog( @"%s:%s",__func__,"IJKMediaCtrl_WillTcpOpen");
             break;
         case IJKMediaCtrl_DidTcpOpen:
+            NSLog( @"%s:%s",__func__,"IJKMediaCtrl_DidTcpOpen");
             mpc->_monitor.tcpError = realData->error;
             mpc->_monitor.remoteIp = [NSString stringWithUTF8String:realData->ip];
             [mpc setHudValue: mpc->_monitor.remoteIp forKey:@"ip"];
+            break;
+        case IJKMediaCtrl_WillHttpOpen:
+            NSLog( @"%s:%s",__func__,"IJKMediaCtrl_WillHttpOpen");
+            break;
+        case IJKMediaCtrl_WillLiveOpen:
+            NSLog( @"%s:%s",__func__,"IJKMediaCtrl_WillLiveOpen");
+            break;
+        case IJKMediaCtrl_WillConcatSegmentOpen:
+            NSLog( @"%s:%s",__func__,"IJKMediaCtrl_WillConcatSegmentOpen");
             break;
         default:
             assert(!"unexcepted type for tcp io control");
@@ -1806,4 +1829,3 @@ static int ijkff_inject_callback(void *opaque, int message, void *data, size_t d
 }
 
 @end
-

@@ -58,8 +58,6 @@ IJKSampleAspectRatioMake(NSInteger numerator, NSInteger denominator)
     return sampleAspectRatio;
 }
 
-
-
 @interface IJKFFMoviePlayerMessage : NSObject {
 @public
     AVMessage _msg;
