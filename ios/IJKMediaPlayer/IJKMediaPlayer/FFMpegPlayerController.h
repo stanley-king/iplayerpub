@@ -1,5 +1,5 @@
 /*
- * IJKFFMoviePlayerController.h
+ * FFMpegPlayerController.h
  *
  * Copyright (c) 2013 Bilibili
  * Copyright (c) 2013 Zhang Rui <bbcallen@gmail.com>
@@ -21,10 +21,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#import "IJKMediaPlayback.h"
-#import "IJKFFMonitor.h"
-#import "IJKFFOptions.h"
-#import "IJKSDLGLViewProtocol.h"
+#import "IMediaPlayback.h"
+#import "FFMpegMonitor.h"
+#import "FFMpegOptions.h"
+#import "ISDLGLView.h"
 
 // media meta
 #define k_IJKM_KEY_FORMAT         @"format"
@@ -70,21 +70,21 @@ typedef enum IJKLogLevel {
     k_IJK_LOG_SILENT  = 8,
 } IJKLogLevel;
 
-@interface IJKFFMoviePlayerController : NSObject <IJKMediaPlayback>
+@interface FFMpegPlayerController : NSObject <IMediaPlayback>
 
 - (id)initWithContentURL:(NSURL *)aUrl
-             withOptions:(IJKFFOptions *)options;
+             withOptions:(FFMpegOptions *)options;
 
 - (id)initWithContentURLString:(NSString *)aUrlString
-                   withOptions:(IJKFFOptions *)options;
+                   withOptions:(FFMpegOptions *)options;
 
 - (id)initWithMoreContent:(NSURL *)aUrl
-             withOptions:(IJKFFOptions *)options
-              withGLView:(UIView<IJKSDLGLViewProtocol> *)glView;
+             withOptions:(FFMpegOptions *)options
+              withGLView:(UIView<ISDLGLView> *)glView;
 
 - (id)initWithMoreContentString:(NSString *)aUrlString
-                 withOptions:(IJKFFOptions *)options
-                  withGLView:(UIView<IJKSDLGLViewProtocol> *)glView;
+                 withOptions:(FFMpegOptions *)options
+                  withGLView:(UIView<ISDLGLView> *)glView;
 
 - (void)prepareToPlay;
 - (void)play;
@@ -139,7 +139,7 @@ typedef enum IJKLogLevel {
 - (void)didShutdown;
 
 #pragma mark KVO properties
-@property (nonatomic, readonly) IJKFFMonitor *monitor;
+@property (nonatomic, readonly) FFMpegMonitor *monitor;
 
 @end
 

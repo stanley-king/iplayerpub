@@ -19,14 +19,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#import "IJKFFMonitor.h"
+#import "FFMpegMonitor.h"
 #include "ijksdl/ijksdl_timer.h"
 #include "ijkplayer/ijkmeta.h"
 #import "NSString+IJKMedia.h"
 
 #define IJK_FFM_SAMPLE_RANGE 2000
 
-@implementation IJKFFMonitor
+@implementation FFMpegMonitor
 {
     SDL_SpeedSampler2 _tcpSpeedSampler;
 }

@@ -1,5 +1,5 @@
 /*
- * IJKFFOptions.m
+ * FFMpegOptions.m
  *
  * Copyright (c) 2013-2015 Bilibili
  * Copyright (c) 2013-2015 Zhang Rui <bbcallen@gmail.com>
@@ -21,10 +21,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#import "IJKFFOptions.h"
+#import "FFMpegOptions.h"
 #include "ijkplayer/ios/ijkplayer_ios.h"
 
-@implementation IJKFFOptions {
+@implementation FFMpegOptions {
     NSMutableDictionary *_optionCategories;
 
     NSMutableDictionary *_playerOptions;
@@ -34,9 +34,9 @@
     NSMutableDictionary *_swrOptions;
 }
 
-+ (IJKFFOptions *)optionsByDefault
++ (FFMpegOptions *)optionsByDefault
 {
-    IJKFFOptions *options = [[IJKFFOptions alloc] init];
+    FFMpegOptions *options = [[FFMpegOptions alloc] init];
 
     [options setPlayerOptionIntValue:30     forKey:@"max-fps"];
     [options setPlayerOptionIntValue:0      forKey:@"framedrop"];

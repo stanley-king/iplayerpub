@@ -24,11 +24,11 @@
  */
 
 #import <UIKit/UIKit.h>
-#import "IJKSDLGLViewProtocol.h"
+#import "ISDLGLView.h"
 
 #include "ijksdl/ijksdl_vout.h"
 
-@interface IJKSDLGLView : UIView <IJKSDLGLViewProtocol>
+@interface IJKSDLGLView : UIView <ISDLGLView>
 
 - (id) initWithFrame:(CGRect)frame;
 - (void) display: (SDL_VoutOverlay *) overlay;

@@ -62,19 +62,19 @@
 //    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeLeft animated:NO];
 
 #ifdef DEBUG
-    [IJKFFMoviePlayerController setLogReport:YES];
-    [IJKFFMoviePlayerController setLogLevel:k_IJK_LOG_DEBUG];
+    [FFMpegPlayerController setLogReport:YES];
+    [FFMpegPlayerController setLogLevel:k_IJK_LOG_DEBUG];
 #else
-    [IJKFFMoviePlayerController setLogReport:NO];
-    [IJKFFMoviePlayerController setLogLevel:k_IJK_LOG_INFO];
+    [FFMpegPlayerController setLogReport:NO];
+    [FFMpegPlayerController setLogLevel:k_IJK_LOG_INFO];
 #endif
 
-    [IJKFFMoviePlayerController checkIfFFmpegVersionMatch:YES];
-    // [IJKFFMoviePlayerController checkIfPlayerVersionMatch:YES major:1 minor:0 micro:0];
+    [FFMpegPlayerController checkIfFFmpegVersionMatch:YES];
+    // [FFMpegPlayerController checkIfPlayerVersionMatch:YES major:1 minor:0 micro:0];
 
-    IJKFFOptions *options = [IJKFFOptions optionsByDefault];
+    FFMpegOptions *options = [FFMpegOptions optionsByDefault];
 
-    self.player = [[IJKFFMoviePlayerController alloc] initWithContentURL:self.url withOptions:options];
+    self.player = [[FFMpegPlayerController alloc] initWithContentURL:self.url withOptions:options];
     self.player.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     self.player.view.frame = self.view.bounds;
     self.player.scalingMode = IJKMPMovieScalingModeAspectFit;
@@ -135,8 +135,8 @@
 
 - (IBAction)onClickHUD:(UIBarButtonItem *)sender
 {
-    if ([self.player isKindOfClass:[IJKFFMoviePlayerController class]]) {
-        IJKFFMoviePlayerController *player = self.player;
+    if ([self.player isKindOfClass:[FFMpegPlayerController class]]) {
+        FFMpegPlayerController *player = self.player;
         player.shouldShowHudView = !player.shouldShowHudView;
         
         sender.title = (player.shouldShowHudView ? @"HUD On" : @"HUD Off");

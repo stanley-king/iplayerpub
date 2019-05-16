@@ -17,12 +17,13 @@
 
 #import <UIKit/UIKit.h>
 #import <IJKMediaFramework/IJKMediaFramework.h>
+
 @class IJKMediaControl;
 
 @interface IJKVideoViewController : UIViewController
 
 @property(atomic,strong) NSURL *url;
-@property(atomic, retain) id<IJKMediaPlayback> player;
+@property(atomic, retain) id<IMediaPlayback> player;
 
 - (id)initWithURL:(NSURL *)url;
 

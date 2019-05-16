@@ -1,5 +1,5 @@
 /*
- * IJKMediaPlayback.h
+ * IMediaPlayback.h
  *
  * Copyright (c) 2013 Bilibili
  * Copyright (c) 2013 Zhang Rui <bbcallen@gmail.com>
@@ -61,11 +61,11 @@ typedef NS_ENUM(NSInteger, IJKMPMovieTimeOption) {
     IJKMPMovieTimeOptionExact
 };
 
-@protocol IJKMediaPlayback;
+@protocol IMediaPlayback;
 
 #pragma mark IJKMediaPlayback
 
-@protocol IJKMediaPlayback <NSObject>
+@protocol IMediaPlayback <NSObject>
 
 - (void)prepareToPlay;
 - (void)play;

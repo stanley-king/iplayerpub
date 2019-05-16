@@ -1,5 +1,5 @@
 /*
- * IJKFFOptions.h
+ * FFMpegOptions.h
  *
  * Copyright (c) 2013-2015 Bilibili
  * Copyright (c) 2013-2015 Zhang Rui <bbcallen@gmail.com>
@@ -45,9 +45,9 @@ typedef enum IJKAVDiscard {
 
 struct IjkMediaPlayer;
 
-@interface IJKFFOptions : NSObject
+@interface FFMpegOptions : NSObject
 
-+(IJKFFOptions *)optionsByDefault;
++(FFMpegOptions *)optionsByDefault;
 
 -(void)applyTo:(struct IjkMediaPlayer *)mediaPlayer;
 
