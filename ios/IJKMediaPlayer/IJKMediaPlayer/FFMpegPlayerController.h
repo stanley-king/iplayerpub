@@ -51,8 +51,8 @@ typedef enum LogLevel {
                withGLView:(UIView<ISDLGLView> *)glView;
 
 - (id)initWithMoreContentString:(NSString *)aUrlString
-                 withOptions:(FFMpegOptions *)options
-                  withGLView:(UIView<ISDLGLView> *)glView;
+                    withOptions:(FFMpegOptions *)options
+                     withGLView:(UIView<ISDLGLView> *)glView;
 
 - (void)prepareToPlay;
 - (void)play;
@@ -99,7 +99,6 @@ typedef enum LogLevel {
 @property (nonatomic, retain) id<IJKMediaUrlOpenDelegate> tcpOpenDelegate;
 @property (nonatomic, retain) id<IJKMediaUrlOpenDelegate> httpOpenDelegate;
 @property (nonatomic, retain) id<IJKMediaUrlOpenDelegate> liveOpenDelegate;
-
 @property (nonatomic, retain) id<IJKMediaNativeInvokeDelegate> nativeInvokeDelegate;
 
 - (void)didShutdown;

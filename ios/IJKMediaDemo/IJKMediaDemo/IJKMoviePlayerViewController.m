@@ -56,10 +56,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-
-//    [[UIApplication sharedApplication] setStatusBarHidden:YES];
-//    [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeLeft animated:NO];
 
 #ifdef DEBUG
     [FFMpegPlayerController setLogReport:YES];
@@ -71,8 +67,8 @@
 
     [FFMpegPlayerController checkIfFFmpegVersionMatch:YES];
     FFMpegOptions *options = [FFMpegOptions optionsByDefault];
-
     self.player = [[FFMpegPlayerController alloc] initWithContentURL:self.url withOptions:options];
+
     self.player.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     self.player.view.frame = self.view.bounds;
     self.player.scalingMode = IJKMPMovieScalingModeAspectFit;
