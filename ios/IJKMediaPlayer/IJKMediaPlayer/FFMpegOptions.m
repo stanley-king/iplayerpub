@@ -99,7 +99,7 @@
 
 - (void)setOptionValue:(NSString *)value
                 forKey:(NSString *)key
-            ofCategory:(IJKFFOptionCategory)category
+            ofCategory:(FFOptionCategory)category
 {
     if (!key)
         return;
@@ -116,7 +116,7 @@
 
 - (void)setOptionIntValue:(int64_t)value
                    forKey:(NSString *)key
-               ofCategory:(IJKFFOptionCategory)category
+               ofCategory:(FFOptionCategory)category
 {
     if (!key)
         return;
@@ -132,42 +132,42 @@
 
 -(void)setFormatOptionValue:(NSString *)value forKey:(NSString *)key
 {
-    [self setOptionValue:value forKey:key ofCategory:kIJKFFOptionCategoryFormat];
+    [self setOptionValue:value forKey:key ofCategory:kFFOptionCategoryFormat];
 }
 
 -(void)setCodecOptionValue:(NSString *)value forKey:(NSString *)key
 {
-    [self setOptionValue:value forKey:key ofCategory:kIJKFFOptionCategoryCodec];
+    [self setOptionValue:value forKey:key ofCategory:kFFOptionCategoryCodec];
 }
 
 -(void)setSwsOptionValue:(NSString *)value forKey:(NSString *)key
 {
-    [self setOptionValue:value forKey:key ofCategory:kIJKFFOptionCategorySws];
+    [self setOptionValue:value forKey:key ofCategory:kFFOptionCategorySws];
 }
 
 -(void)setPlayerOptionValue:(NSString *)value forKey:(NSString *)key
 {
-    [self setOptionValue:value forKey:key ofCategory:kIJKFFOptionCategoryPlayer];
+    [self setOptionValue:value forKey:key ofCategory:kFFOptionCategoryPlayer];
 }
 
 -(void)setFormatOptionIntValue:(int64_t)value forKey:(NSString *)key
 {
-    [self setOptionIntValue:value forKey:key ofCategory:kIJKFFOptionCategoryFormat];
+    [self setOptionIntValue:value forKey:key ofCategory:kFFOptionCategoryFormat];
 }
 
 -(void)setCodecOptionIntValue:(int64_t)value forKey:(NSString *)key
 {
-    [self setOptionIntValue:value forKey:key ofCategory:kIJKFFOptionCategoryCodec];
+    [self setOptionIntValue:value forKey:key ofCategory:kFFOptionCategoryCodec];
 }
 
 -(void)setSwsOptionIntValue:(int64_t)value forKey:(NSString *)key
 {
-    [self setOptionIntValue:value forKey:key ofCategory:kIJKFFOptionCategorySws];
+    [self setOptionIntValue:value forKey:key ofCategory:kFFOptionCategorySws];
 }
 
 -(void)setPlayerOptionIntValue:(int64_t)value forKey:(NSString *)key
 {
-    [self setOptionIntValue:value forKey:key ofCategory:kIJKFFOptionCategoryPlayer];
+    [self setOptionIntValue:value forKey:key ofCategory:kFFOptionCategoryPlayer];
 }
 
 @end

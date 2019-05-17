@@ -23,13 +23,13 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum IJKFFOptionCategory {
-    kIJKFFOptionCategoryFormat = 1,
-    kIJKFFOptionCategoryCodec  = 2,
-    kIJKFFOptionCategorySws    = 3,
-    kIJKFFOptionCategoryPlayer = 4,
-    kIJKFFOptionCategorySwr    = 5,
-} IJKFFOptionCategory;
+typedef enum FFOptionCategory {
+    kFFOptionCategoryFormat = 1,
+    kFFOptionCategoryCodec  = 2,
+    kFFOptionCategorySws    = 3,
+    kFFOptionCategoryPlayer = 4,
+    kFFOptionCategorySwr    = 5,
+} FFOptionCategory;
 
 // for codec option 'skip_loop_filter' and 'skip_frame'
 typedef enum IJKAVDiscard {
@@ -53,11 +53,11 @@ struct IjkMediaPlayer;
 
 - (void)setOptionValue:(NSString *)value
                 forKey:(NSString *)key
-            ofCategory:(IJKFFOptionCategory)category;
+            ofCategory:(FFOptionCategory)category;
 
 - (void)setOptionIntValue:(int64_t)value
                    forKey:(NSString *)key
-               ofCategory:(IJKFFOptionCategory)category;
+               ofCategory:(FFOptionCategory)category;
 
 
 -(void)setFormatOptionValue:       (NSString *)value forKey:(NSString *)key;

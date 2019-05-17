@@ -63,15 +63,13 @@
 
 #ifdef DEBUG
     [FFMpegPlayerController setLogReport:YES];
-    [FFMpegPlayerController setLogLevel:k_IJK_LOG_DEBUG];
+    [FFMpegPlayerController setLogLevel:kLOG_DEBUG];
 #else
     [FFMpegPlayerController setLogReport:NO];
-    [FFMpegPlayerController setLogLevel:k_IJK_LOG_INFO];
+    [FFMpegPlayerController setLogLevel:kLOG_INFO];
 #endif
 
     [FFMpegPlayerController checkIfFFmpegVersionMatch:YES];
-    // [FFMpegPlayerController checkIfPlayerVersionMatch:YES major:1 minor:0 micro:0];
-
     FFMpegOptions *options = [FFMpegOptions optionsByDefault];
 
     self.player = [[FFMpegPlayerController alloc] initWithContentURL:self.url withOptions:options];

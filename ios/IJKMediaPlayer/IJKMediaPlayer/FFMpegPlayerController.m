@@ -34,6 +34,39 @@
 #import "ijkioapplication.h"
 #include "string.h"
 
+
+// media meta
+#define k_IJKM_KEY_FORMAT         @"format"
+#define k_IJKM_KEY_DURATION_US    @"duration_us"
+#define k_IJKM_KEY_START_US       @"start_us"
+#define k_IJKM_KEY_BITRATE        @"bitrate"
+
+// stream meta
+#define k_IJKM_KEY_TYPE           @"type"
+#define k_IJKM_VAL_TYPE__VIDEO    @"video"
+#define k_IJKM_VAL_TYPE__AUDIO    @"audio"
+#define k_IJKM_VAL_TYPE__UNKNOWN  @"unknown"
+
+#define k_IJKM_KEY_CODEC_NAME      @"codec_name"
+#define k_IJKM_KEY_CODEC_PROFILE   @"codec_profile"
+#define k_IJKM_KEY_CODEC_LONG_NAME @"codec_long_name"
+
+// stream: video
+#define k_IJKM_KEY_WIDTH          @"width"
+#define k_IJKM_KEY_HEIGHT         @"height"
+#define k_IJKM_KEY_FPS_NUM        @"fps_num"
+#define k_IJKM_KEY_FPS_DEN        @"fps_den"
+#define k_IJKM_KEY_TBR_NUM        @"tbr_num"
+#define k_IJKM_KEY_TBR_DEN        @"tbr_den"
+#define k_IJKM_KEY_SAR_NUM        @"sar_num"
+#define k_IJKM_KEY_SAR_DEN        @"sar_den"
+
+// stream: audio
+#define k_IJKM_KEY_SAMPLE_RATE    @"sample_rate"
+#define k_IJKM_KEY_CHANNEL_LAYOUT @"channel_layout"
+
+#define kk_IJKM_KEY_STREAMS       @"streams"
+
 static const char *kIJKFFRequiredFFmpegVersion = "ff3.4--ijk0.8.7--20180103--001";
 
 // It means you didn't call shutdown if you found this object leaked.
@@ -241,9 +274,9 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
         ijkmp_ios_set_glview(_mediaPlayer, _glView);
         ijkmp_set_option(_mediaPlayer, IJKMP_OPT_CATEGORY_PLAYER, "overlay-format", "fcc-_es2");
 #ifdef DEBUG
-        [FFMpegPlayerController setLogLevel:k_IJK_LOG_DEBUG];
+        [FFMpegPlayerController setLogLevel:kLOG_DEBUG];
 #else
-        [FFMpegPlayerController setLogLevel:k_IJK_LOG_SILENT];
+        [FFMpegPlayerController setLogLevel:kLOG_SILENT];
 #endif
         // init audio sink
         [[IJKAudioKit sharedInstance] setupAudioSession];
@@ -344,9 +377,9 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
 
         ijkmp_set_option(_mediaPlayer, IJKMP_OPT_CATEGORY_PLAYER, "overlay-format", "fcc-_es2");
 #ifdef DEBUG
-        [FFMpegPlayerController setLogLevel:k_IJK_LOG_DEBUG];
+        [FFMpegPlayerController setLogLevel:kLOG_DEBUG];
 #else
-        [FFMpegPlayerController setLogLevel:k_IJK_LOG_SILENT];
+        [FFMpegPlayerController setLogLevel:kLOG_SILENT];
 #endif
         // init audio sink
         [[IJKAudioKit sharedInstance] setupAudioSession];
@@ -464,20 +497,20 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
     return _isVideoToolboxOpen;
 }
 
-inline static int getPlayerOption(IJKFFOptionCategory category)
+inline static int getPlayerOption(FFOptionCategory category)
 {
     int mp_category = -1;
     switch (category) {
-        case kIJKFFOptionCategoryFormat:
+        case kFFOptionCategoryFormat:
             mp_category = IJKMP_OPT_CATEGORY_FORMAT;
             break;
-        case kIJKFFOptionCategoryCodec:
+        case kFFOptionCategoryCodec:
             mp_category = IJKMP_OPT_CATEGORY_CODEC;
             break;
-        case kIJKFFOptionCategorySws:
+        case kFFOptionCategorySws:
             mp_category = IJKMP_OPT_CATEGORY_SWS;
             break;
-        case kIJKFFOptionCategoryPlayer:
+        case kFFOptionCategoryPlayer:
             mp_category = IJKMP_OPT_CATEGORY_PLAYER;
             break;
         default:
@@ -488,7 +521,7 @@ inline static int getPlayerOption(IJKFFOptionCategory category)
 
 - (void)setOptionValue:(NSString *)value
                 forKey:(NSString *)key
-            ofCategory:(IJKFFOptionCategory)category
+            ofCategory:(FFOptionCategory)category
 {
     assert(_mediaPlayer);
     if (!_mediaPlayer)
@@ -499,7 +532,7 @@ inline static int getPlayerOption(IJKFFOptionCategory category)
 
 - (void)setOptionIntValue:(int64_t)value
                    forKey:(NSString *)key
-               ofCategory:(IJKFFOptionCategory)category
+               ofCategory:(FFOptionCategory)category
 {
     assert(_mediaPlayer);
     if (!_mediaPlayer)
@@ -513,7 +546,7 @@ inline static int getPlayerOption(IJKFFOptionCategory category)
     ijkmp_global_set_log_report(preferLogReport ? 1 : 0);
 }
 
-+ (void)setLogLevel:(IJKLogLevel)logLevel
++ (void)setLogLevel:(LogLevel)logLevel
 {
     ijkmp_global_set_log_level(logLevel);
 }
@@ -1663,42 +1696,42 @@ static int ijkff_inject_callback(void *opaque, int message, void *data, size_t d
 
 - (void)setFormatOptionValue:(NSString *)value forKey:(NSString *)key
 {
-    [self setOptionValue:value forKey:key ofCategory:kIJKFFOptionCategoryFormat];
+    [self setOptionValue:value forKey:key ofCategory:kFFOptionCategoryFormat];
 }
 
 - (void)setCodecOptionValue:(NSString *)value forKey:(NSString *)key
 {
-    [self setOptionValue:value forKey:key ofCategory:kIJKFFOptionCategoryCodec];
+    [self setOptionValue:value forKey:key ofCategory:kFFOptionCategoryCodec];
 }
 
 - (void)setSwsOptionValue:(NSString *)value forKey:(NSString *)key
 {
-    [self setOptionValue:value forKey:key ofCategory:kIJKFFOptionCategorySws];
+    [self setOptionValue:value forKey:key ofCategory:kFFOptionCategorySws];
 }
 
 - (void)setPlayerOptionValue:(NSString *)value forKey:(NSString *)key
 {
-    [self setOptionValue:value forKey:key ofCategory:kIJKFFOptionCategoryPlayer];
+    [self setOptionValue:value forKey:key ofCategory:kFFOptionCategoryPlayer];
 }
 
 - (void)setFormatOptionIntValue:(int64_t)value forKey:(NSString *)key
 {
-    [self setOptionIntValue:value forKey:key ofCategory:kIJKFFOptionCategoryFormat];
+    [self setOptionIntValue:value forKey:key ofCategory:kFFOptionCategoryFormat];
 }
 
 - (void)setCodecOptionIntValue:(int64_t)value forKey:(NSString *)key
 {
-    [self setOptionIntValue:value forKey:key ofCategory:kIJKFFOptionCategoryCodec];
+    [self setOptionIntValue:value forKey:key ofCategory:kFFOptionCategoryCodec];
 }
 
 - (void)setSwsOptionIntValue:(int64_t)value forKey:(NSString *)key
 {
-    [self setOptionIntValue:value forKey:key ofCategory:kIJKFFOptionCategorySws];
+    [self setOptionIntValue:value forKey:key ofCategory:kFFOptionCategorySws];
 }
 
 - (void)setPlayerOptionIntValue:(int64_t)value forKey:(NSString *)key
 {
-    [self setOptionIntValue:value forKey:key ofCategory:kIJKFFOptionCategoryPlayer];
+    [self setOptionIntValue:value forKey:key ofCategory:kFFOptionCategoryPlayer];
 }
 
 - (void)setMaxBufferSize:(int)maxBufferSize
