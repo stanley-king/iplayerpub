@@ -1,6 +1,4 @@
 #import "IMediaPlayback.h"
-#import "FFMpegMonitor.h"
-#import "FFMpegOptions.h"
 #import "ISDLGLView.h"
 
 typedef enum LogLevel {
@@ -32,30 +30,10 @@ typedef enum LogLevel {
 @property(nonatomic, readonly) CGFloat fpsAtOutput;
 @property(nonatomic) BOOL shouldShowHudView;
 
-- (void)setOptionValue:(NSString *)value
-                forKey:(NSString *)key
-            ofCategory:(FFOptionCategory)category;
-
-- (void)setOptionIntValue:(int64_t)value
-                   forKey:(NSString *)key
-               ofCategory:(FFOptionCategory)category;
-
-- (void)setFormatOptionValue:       (NSString *)value forKey:(NSString *)key;
-- (void)setCodecOptionValue:        (NSString *)value forKey:(NSString *)key;
-- (void)setSwsOptionValue:          (NSString *)value forKey:(NSString *)key;
-- (void)setPlayerOptionValue:       (NSString *)value forKey:(NSString *)key;
-
-- (void)setFormatOptionIntValue:    (int64_t)value forKey:(NSString *)key;
-- (void)setCodecOptionIntValue:     (int64_t)value forKey:(NSString *)key;
-- (void)setSwsOptionIntValue:       (int64_t)value forKey:(NSString *)key;
-- (void)setPlayerOptionIntValue:    (int64_t)value forKey:(NSString *)key;
-
 @property (nonatomic, retain) id<IJKMediaUrlOpenDelegate> segmentOpenDelegate;
 @property (nonatomic, retain) id<IJKMediaUrlOpenDelegate> tcpOpenDelegate;
 @property (nonatomic, retain) id<IJKMediaUrlOpenDelegate> httpOpenDelegate;
 @property (nonatomic, retain) id<IJKMediaUrlOpenDelegate> liveOpenDelegate;
 @property (nonatomic, retain) id<IJKMediaNativeInvokeDelegate> nativeInvokeDelegate;
 
-#pragma mark KVO properties
-@property (nonatomic, readonly) FFMpegMonitor *monitor;
 @end

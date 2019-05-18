@@ -23,7 +23,7 @@
 
 #import "IMediaPlayback.h"
 
-NSString *const IJKMPMediaPlaybackIsPreparedToPlayDidChangeNotification = @"IJKMPMediaPlaybackIsPreparedToPlayDidChangeNotification";
+NSString *const MPMediaPlaybackIsPreparedToPlayDidChangeNotification = @"MPMediaPlaybackIsPreparedToPlayDidChangeNotification";
 
 NSString *const IJKMPMoviePlayerPlaybackDidFinishNotification = @"IJKMPMoviePlayerPlaybackDidFinishNotification";
 NSString *const IJKMPMoviePlayerPlaybackDidFinishReasonUserInfoKey =

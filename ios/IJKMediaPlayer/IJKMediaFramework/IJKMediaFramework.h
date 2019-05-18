@@ -7,7 +7,6 @@ FOUNDATION_EXPORT double IJKMediaFrameworkVersionNumber;
 FOUNDATION_EXPORT const unsigned char IJKMediaFrameworkVersionString[];
 
 #import <IJKMediaFramework/IMediaPlayback.h>
-#import <IJKMediaFramework/FFMpegOptions.h>
 #import <IJKMediaFramework/FFMpegPlayerController.h>
 #import <IJKMediaFramework/ISDLGLView.h>
 

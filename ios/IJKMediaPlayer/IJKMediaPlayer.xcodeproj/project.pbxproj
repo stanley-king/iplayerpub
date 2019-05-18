@@ -210,7 +210,7 @@
 		E654EAD31B6B288A00B0F2D0 /* IJKSDLGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6EE92B71878230C009EAB56 /* IJKSDLGLView.m */; };
 		E654EAE71B6B295200B0F2D0 /* IMediaPlayback.h in Headers */ = {isa = PBXBuildFile; fileRef = E6903EC117EAF6C500CFD954 /* IMediaPlayback.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E654EAEA1B6B295200B0F2D0 /* FFMpegPlayerController.h in Headers */ = {isa = PBXBuildFile; fileRef = E66F8DE517EFD9C300354D80 /* FFMpegPlayerController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E654EAEC1B6B295200B0F2D0 /* FFMpegOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = E62139BC180FA89A00553533 /* FFMpegOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E654EAEC1B6B295200B0F2D0 /* FFMpegOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = E62139BC180FA89A00553533 /* FFMpegOptions.h */; };
 		E68B7AC51C1E7F20001DE241 /* IJKSDLHudViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = E68B7AC31C1E7F20001DE241 /* IJKSDLHudViewController.h */; };
 		E68B7AC61C1E7F20001DE241 /* IJKSDLHudViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E68B7AC41C1E7F20001DE241 /* IJKSDLHudViewController.m */; };
 		E68B7ACF1C1E97B0001DE241 /* IJKSDLHudViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = E68B7ACD1C1E97B0001DE241 /* IJKSDLHudViewCell.h */; };
@@ -239,7 +239,7 @@
 		E6C459C41C708E60004831EC /* rgb.fsh.c in Sources */ = {isa = PBXBuildFile; fileRef = E6C459C21C708E60004831EC /* rgb.fsh.c */; };
 		E6C459C81C7095E5004831EC /* yuv420sp.fsh.c in Sources */ = {isa = PBXBuildFile; fileRef = E6C459C61C7095E5004831EC /* yuv420sp.fsh.c */; };
 		E6C459CC1C70967F004831EC /* renderer_yuv420sp.c in Sources */ = {isa = PBXBuildFile; fileRef = E6C459CA1C70967F004831EC /* renderer_yuv420sp.c */; };
-		E6DBD3891C8941EB0058E4FB /* FFMpegMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = E6DBD3871C8941EB0058E4FB /* FFMpegMonitor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E6DBD3891C8941EB0058E4FB /* FFMpegMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = E6DBD3871C8941EB0058E4FB /* FFMpegMonitor.h */; };
 		E6DBD38A1C8941EB0058E4FB /* FFMpegMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = E6DBD3881C8941EB0058E4FB /* FFMpegMonitor.m */; };
 		E6E1B9A81C741F72000C6C72 /* renderer_yuv420sp_vtb.m in Sources */ = {isa = PBXBuildFile; fileRef = E6E1B9A71C741F72000C6C72 /* renderer_yuv420sp_vtb.m */; };
 /* End PBXBuildFile section */
@@ -953,11 +953,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				E654EA8F1B6B27E600B0F2D0 /* IJKMediaFramework.h in Headers */,
-				E6DBD3891C8941EB0058E4FB /* FFMpegMonitor.h in Headers */,
 				54CF8A3C1E1526F800309DD5 /* ijkiourl.h in Headers */,
 				E654EAEA1B6B295200B0F2D0 /* FFMpegPlayerController.h in Headers */,
 				E68B7AC51C1E7F20001DE241 /* IJKSDLHudViewController.h in Headers */,
 				E654EAEC1B6B295200B0F2D0 /* FFMpegOptions.h in Headers */,
+				E6DBD3891C8941EB0058E4FB /* FFMpegMonitor.h in Headers */,
 				54CF8A541E15287D00309DD5 /* ijkutils.h in Headers */,
 				54CF8A4A1E15287D00309DD5 /* ijkdict.h in Headers */,
 				E6C459841C7030AA004831EC /* ijksdl_gles2.h in Headers */,

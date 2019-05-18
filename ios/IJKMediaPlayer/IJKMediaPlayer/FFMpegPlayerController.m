@@ -32,6 +32,8 @@
 #import "IJKNotificationManager.h"
 #import "NSString+IJKMedia.h"
 #import "ijkioapplication.h"
+#import "FFMpegMonitor.h"
+#import "FFMpegOptions.h"
 #include "string.h"
 
 
@@ -119,6 +121,7 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
 
     float _volume;
     BOOL  _muting;
+    FFMpegMonitor *_monitor;
 }
 
 @synthesize view = _view;
@@ -142,7 +145,6 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
 
 @synthesize isDanmakuMediaAirPlay = _isDanmakuMediaAirPlay;
 
-@synthesize monitor = _monitor;
 @synthesize shouldShowHudView           = _shouldShowHudView;
 @synthesize isSeekBuffering = _isSeekBuffering;
 @synthesize isAudioSync = _isAudioSync;
@@ -1252,7 +1254,7 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
             [self startHudTimer];
             _isPreparedToPlay = YES;
 
-            [[NSNotificationCenter defaultCenter] postNotificationName:IJKMPMediaPlaybackIsPreparedToPlayDidChangeNotification object:self];
+            [[NSNotificationCenter defaultCenter] postNotificationName:MPMediaPlaybackIsPreparedToPlayDidChangeNotification object:self];
             _loadState = IJKMPMovieLoadStatePlayable | IJKMPMovieLoadStatePlaythroughOK;
 
             [[NSNotificationCenter defaultCenter]

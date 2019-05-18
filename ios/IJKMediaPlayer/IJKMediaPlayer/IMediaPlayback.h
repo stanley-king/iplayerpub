@@ -118,7 +118,7 @@ typedef NS_ENUM(NSInteger, IJKMPMovieTimeOption) {
 
 // Posted when the prepared state changes of an object conforming to the MPMediaPlayback protocol changes.
 // This supersedes MPMoviePlayerContentPreloadDidFinishNotification.
-IJK_EXTERN NSString *const IJKMPMediaPlaybackIsPreparedToPlayDidChangeNotification;
+IJK_EXTERN NSString *const MPMediaPlaybackIsPreparedToPlayDidChangeNotification;
 
 // -----------------------------------------------------------------------------
 //  MPMoviePlayerController.h
