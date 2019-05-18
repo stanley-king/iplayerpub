@@ -19,7 +19,7 @@
 #import "IJKQRCodeScanViewController.h"
 #import "IJKCommon.h"
 #import "IJKDemoHistory.h"
-#import "IJKMoviePlayerViewController.h"
+#import "IJKVideoViewController.h"
 #import "IJKDemoLocalFolderViewController.h"
 #import "IJKDemoSampleViewController.h"
 #import <MobileCoreServices/MobileCoreServices.h>
@@ -161,13 +161,13 @@
         case 1: {
             IJKDemoHistoryItem *historyItem = self.historyList[indexPath.row];
             
-            [IJKVideoViewController presentFromViewController:self withTitle:historyItem.title URL:historyItem.url completion:^{
-                [self.navigationController popViewControllerAnimated:NO];
-            }];
-
-//            [IJKMultiVideoViewController presentFromViewController:self withTitle:historyItem.title URL:historyItem.url completion:^{
+//            [IJKVideoViewController presentFromViewController:self withTitle:historyItem.title URL:historyItem.url completion:^{
 //                [self.navigationController popViewControllerAnimated:NO];
 //            }];
+
+            [IJKMultiVideoViewController presentFromViewController:self withTitle:historyItem.title URL:historyItem.url completion:^{
+                [self.navigationController popViewControllerAnimated:NO];
+            }];
         } break;
             
         default:

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-#import "IJKMoviePlayerViewController.h"
+#import "IJKVideoViewController.h"
 #import "IJKMediaControl.h"
 #import "IJKCommon.h"
 #import "IJKDemoHistory.h"
@@ -37,7 +37,7 @@
 }
 
 - (instancetype)initWithURL:(NSURL *)url {
-    self = [self initWithNibName:@"IJKMoviePlayerViewController" bundle:nil];
+    self = [self initWithNibName:@"IJKVideoViewController" bundle:nil];
     if (self) {
         self.url = url;
     }
@@ -65,9 +65,7 @@
     [FFMpegPlayerController setLogLevel:kLOG_INFO];
 #endif
 
-    [FFMpegPlayerController checkIfFFmpegVersionMatch:YES];
-    FFMpegOptions *options = [FFMpegOptions optionsByDefault];
-    self.player = [[FFMpegPlayerController alloc] initWithContentURL:self.url withOptions:options];
+    self.player = [[FFMpegPlayerController alloc] initWithContentURL:self.url];
 
     self.player.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     self.player.view.frame = self.view.bounds;
@@ -83,15 +81,12 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
     [self installMovieNotificationObservers];
-
     [self.player prepareToPlay];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    
     [self.player shutdown];
     [self removeMovieNotificationObservers];
 }
@@ -147,6 +142,15 @@
 {
     [self.player pause];
     [self.mediaControl refreshMediaControl];
+}
+- (IBAction)onClickMute:(id)sender
+{
+    if([self.player isMute]) {
+        [self.player unmute];
+    }
+    else {
+        [self.player mute];
+    }
 }
 
 - (IBAction)didSliderTouchDown

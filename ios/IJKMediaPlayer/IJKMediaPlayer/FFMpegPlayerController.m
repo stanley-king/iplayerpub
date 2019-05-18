@@ -69,6 +69,16 @@
 
 static const char *kIJKFFRequiredFFmpegVersion = "ff3.4--ijk0.8.7--20180103--001";
 
+void IJKFFIOStatDebugCallback(const char *url, int type, int bytes);
+void IJKFFIOStatRegister(void (*cb)(const char *url, int type, int bytes));
+
+void IJKFFIOStatCompleteDebugCallback(const char *url,
+        int64_t read_bytes, int64_t total_size,
+        int64_t elpased_time, int64_t total_duration);
+void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
+        int64_t read_bytes, int64_t total_size,
+        int64_t elpased_time, int64_t total_duration));
+
 // It means you didn't call shutdown if you found this object leaked.
 @interface IJKWeakHolder : NSObject
 @property (nonatomic, weak) id object;
@@ -78,7 +88,6 @@ static const char *kIJKFFRequiredFFmpegVersion = "ff3.4--ijk0.8.7--20180103--001
 @end
 
 @interface FFMpegPlayerController()
-
 @end
 
 @implementation FFMpegPlayerController {
@@ -107,6 +116,9 @@ static const char *kIJKFFRequiredFFmpegVersion = "ff3.4--ijk0.8.7--20180103--001
     IjkIOAppCacheStatistic _cacheStat;
     NSTimer *_hudTimer;
     IJKSDLHudViewController *_hudViewController;
+
+    float _volume;
+    BOOL  _muting;
 }
 
 @synthesize view = _view;
@@ -187,6 +199,18 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
 }
 
 - (id)initWithContentURL:(NSURL *)aUrl
+{
+    if (aUrl == nil)
+        return nil;
+
+    NSString *aUrlString = [aUrl isFileURL] ? [aUrl path] : [aUrl absoluteString];
+    FFMpegOptions* options = [FFMpegOptions optionsByDefault];
+
+    return [self initWithContentURLString:aUrlString
+                              withOptions:options];
+}
+
+- (id)initWithContentURL:(NSURL *)aUrl
              withOptions:(FFMpegOptions *)options
 {
     if (aUrl == nil)
@@ -202,7 +226,13 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
 - (void)setScreenOn: (BOOL)on
 {
     [IJKMediaModule sharedModule].mediaModuleIdleTimerDisabled = on;
-    // [UIApplication sharedApplication].idleTimerDisabled = on;
+}
+
+- (id)initWithContentURLString:(NSString *)aUrlString
+{
+    FFMpegOptions* options = [FFMpegOptions optionsByDefault];
+    return [self initWithContentURLString:aUrlString
+                              withOptions:options];
 }
 
 - (id)initWithContentURLString:(NSString *)aUrlString
@@ -250,6 +280,7 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
         _glView = [[IJKSDLGLView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
         _glView.isThirdGLView = NO;
         _view = _glView;
+
         _hudViewController = [[IJKSDLHudViewController alloc] init];
         [_hudViewController setRect:_glView.frame];
         _shouldShowHudView = NO;
@@ -295,6 +326,17 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
 }
 
 - (id)initWithMoreContent:(NSURL *)aUrl
+               withGLView:(UIView<ISDLGLView> *)glView
+
+{
+    FFMpegOptions* options = [FFMpegOptions optionsByDefault];
+    return [self initWithMoreContent:aUrl
+                         withOptions:options
+                          withGLView:glView];
+
+
+}
+- (id)initWithMoreContent:(NSURL *)aUrl
               withOptions:(FFMpegOptions *)options
                withGLView:(UIView<ISDLGLView> *)glView
 {
@@ -309,6 +351,15 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
                                withGLView:glView];
 }
 
+- (id)initWithMoreContentString:(NSString *)aUrlString
+                     withGLView:(UIView<ISDLGLView> *)glView
+{
+    FFMpegOptions* options = [FFMpegOptions optionsByDefault];
+    return [self initWithMoreContentString:aUrlString
+                               withOptions:options
+                                withGLView:glView];
+
+}
 - (id)initWithMoreContentString:(NSString *)aUrlString
                  withOptions:(FFMpegOptions *)options
                   withGLView:(UIView <ISDLGLView> *)glView
@@ -460,8 +511,6 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
 {
     if (!_mediaPlayer)
         return;
-
-//    [self stopHudTimer];
     ijkmp_pause(_mediaPlayer);
 }
 
@@ -474,6 +523,37 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
 
     [self stopHudTimer];
     ijkmp_stop(_mediaPlayer);
+}
+
+- (BOOL)mute
+{
+    if (!_mediaPlayer) {
+        return FALSE;
+    }
+
+    if(!_muting) {
+        _volume = [self playbackVolume];
+        [self setPlaybackVolume:0.0];
+        _muting = TRUE;
+    }
+    return TRUE;
+}
+
+- (BOOL)unmute
+{
+    if (!_mediaPlayer) {
+        return FALSE;
+    }
+
+    if(_muting) {
+        [self setPlaybackVolume:_volume];
+        _muting = FALSE;
+    }
+    return TRUE;
+}
+- (BOOL)isMute
+{
+    return _muting;
 }
 
 - (BOOL)isPlaying
@@ -752,7 +832,7 @@ inline static int getPlayerOption(FFOptionCategory category)
     if (self->_naturalSize.width > 0 && self->_naturalSize.height > 0) {
         [[NSNotificationCenter defaultCenter]
          postNotificationName:IJKMPMovieNaturalSizeAvailableNotification
-         object:self];
+                       object:self];
     }
 }
 
@@ -1053,7 +1133,8 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
         return;
 
     AVMessage *avmsg = &msg->_msg;
-    switch (avmsg->what) {
+    switch (avmsg->what)
+    {
         case FFP_MSG_FLUSH:
             break;
         case FFP_MSG_ERROR: {
@@ -1103,7 +1184,6 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
                 fillMetaInternal(newMediaMeta, rawMeta, IJKM_KEY_DURATION_US, nil);
                 fillMetaInternal(newMediaMeta, rawMeta, IJKM_KEY_START_US, nil);
                 fillMetaInternal(newMediaMeta, rawMeta, IJKM_KEY_BITRATE, nil);
-
                 fillMetaInternal(newMediaMeta, rawMeta, IJKM_KEY_VIDEO_STREAM, nil);
                 fillMetaInternal(newMediaMeta, rawMeta, IJKM_KEY_AUDIO_STREAM, nil);
 
@@ -1176,8 +1256,8 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
             _loadState = IJKMPMovieLoadStatePlayable | IJKMPMovieLoadStatePlaythroughOK;
 
             [[NSNotificationCenter defaultCenter]
-             postNotificationName:IJKMPMoviePlayerLoadStateDidChangeNotification
-             object:self];
+                    postNotificationName:IJKMPMoviePlayerLoadStateDidChangeNotification
+                                  object:self];
 
             break;
         }
@@ -1221,7 +1301,7 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
 
             [[NSNotificationCenter defaultCenter]
              postNotificationName:IJKMPMoviePlayerLoadStateDidChangeNotification
-             object:self];
+                           object:self];
             _isSeekBuffering = 0;
             break;
         }
@@ -1354,7 +1434,7 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
             break;
         }
         default:
-            // NSLog(@"unknown FFP_MSG_xxx(%d)\n", avmsg->what);
+             NSLog(@"unknown FFP_MSG_xxx(%d)\n", avmsg->what);
             break;
     }
 
@@ -1533,7 +1613,7 @@ static int onInjectOnHttpEvent(FFMpegPlayerController *mpc, int type, void *data
     assert(sizeof(AVAppHttpEvent) == data_size);
 
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    NSURL        *nsurl   = nil;
+    NSURL         *nsurl   = nil;
     FFMpegMonitor *monitor = mpc->_monitor;
     NSString     *url  = monitor.httpUrl;
     NSString     *host = monitor.httpHost;
@@ -1688,7 +1768,9 @@ static int ijkff_inject_callback(void *opaque, int message, void *data, size_t d
             scale = 1.0f;
         _glView.scaleFactor = scale;
     }
-     [[NSNotificationCenter defaultCenter] postNotificationName:IJKMPMoviePlayerIsAirPlayVideoActiveDidChangeNotification object:nil userInfo:nil];
+     [[NSNotificationCenter defaultCenter] postNotificationName:IJKMPMoviePlayerIsAirPlayVideoActiveDidChangeNotification
+                                                         object:nil
+                                                       userInfo:nil];
 }
 
 

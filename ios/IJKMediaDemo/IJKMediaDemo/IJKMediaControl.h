@@ -38,6 +38,7 @@
 
 @property(nonatomic,strong) IBOutlet UIButton *playButton;
 @property(nonatomic,strong) IBOutlet UIButton *pauseButton;
+@property(nonatomic,strong) IBOutlet UIButton *muteButton;
 
 @property(nonatomic,strong) IBOutlet UILabel *currentTimeLabel;
 @property(nonatomic,strong) IBOutlet UILabel *totalDurationLabel;

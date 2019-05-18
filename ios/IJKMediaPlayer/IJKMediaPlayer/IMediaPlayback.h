@@ -66,27 +66,29 @@ typedef NS_ENUM(NSInteger, IJKMPMovieTimeOption) {
 #pragma mark IJKMediaPlayback
 
 @protocol IMediaPlayback <NSObject>
-
 - (void)prepareToPlay;
 - (void)play;
 - (void)pause;
 - (void)stop;
+- (BOOL)isMute;
+- (BOOL)mute;
+- (BOOL)unmute;
 - (BOOL)isPlaying;
 - (void)shutdown;
 - (void)setPauseInBackground:(BOOL)pause;
 
 @property(nonatomic, readonly)  UIView *view;
-@property(nonatomic)            NSTimeInterval currentPlaybackTime;
-@property(nonatomic, readonly)  NSTimeInterval duration;
-@property(nonatomic, readonly)  NSTimeInterval playableDuration;
-@property(nonatomic, readonly)  NSInteger bufferingProgress;
+@property(nonatomic)            NSTimeInterval  currentPlaybackTime;
+@property(nonatomic, readonly)  NSTimeInterval  duration;
+@property(nonatomic, readonly)  NSTimeInterval  playableDuration;
+@property(nonatomic, readonly)  NSInteger       bufferingProgress;
 
 @property(nonatomic, readonly)  BOOL isPreparedToPlay;
 @property(nonatomic, readonly)  IJKMPMoviePlaybackState playbackState;
 @property(nonatomic, readonly)  IJKMPMovieLoadState loadState;
-@property(nonatomic, readonly) int isSeekBuffering;
-@property(nonatomic, readonly) int isAudioSync;
-@property(nonatomic, readonly) int isVideoSync;
+@property(nonatomic, readonly)  int isSeekBuffering;
+@property(nonatomic, readonly)  int isAudioSync;
+@property(nonatomic, readonly)  int isVideoSync;
 
 @property(nonatomic, readonly) int64_t numberOfBytesTransferred;
 
@@ -166,6 +168,7 @@ IJK_EXTERN NSString *const IJKMPMoviePlayerSeekAudioStartNotification;
 IJK_EXTERN NSString *const IJKMPMoviePlayerSeekVideoStartNotification;
 
 @end
+
 
 #pragma mark IJKMediaUrlOpenDelegate
 

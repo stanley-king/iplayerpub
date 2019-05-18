@@ -4,7 +4,7 @@
 //
 
 #import "IJKMultiVideoViewController.h"
-#import "IJKMoviePlayerViewController.h"
+#import "IJKVideoViewController.h"
 #import "IJKDemoHistory.h"
 
 @implementation IJKMultiVideoViewController

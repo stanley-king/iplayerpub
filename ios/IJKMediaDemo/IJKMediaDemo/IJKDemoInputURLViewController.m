@@ -15,7 +15,7 @@
  */
 
 #import "IJKDemoInputURLViewController.h"
-#import "IJKMoviePlayerViewController.h"
+#import "IJKVideoViewController.h"
 
 @interface IJKDemoInputURLViewController () <UITextViewDelegate>
 

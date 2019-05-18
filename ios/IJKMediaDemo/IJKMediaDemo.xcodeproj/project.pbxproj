@@ -43,8 +43,8 @@
 		E6903F1217EAF70200CFD954 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = E6903F1117EAF70200CFD954 /* Default.png */; };
 		E6903F1417EAF70200CFD954 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E6903F1317EAF70200CFD954 /* Default@2x.png */; };
 		E6903F1617EAF70200CFD954 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E6903F1517EAF70200CFD954 /* Default-568h@2x.png */; };
-		E6A9B56417EDA72C00A1A500 /* IJKMoviePlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A9B56217EDA72C00A1A500 /* IJKMoviePlayerViewController.m */; };
-		E6A9B56517EDA72C00A1A500 /* IJKMoviePlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6A9B56317EDA72C00A1A500 /* IJKMoviePlayerViewController.xib */; };
+		E6A9B56417EDA72C00A1A500 /* IJKVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A9B56217EDA72C00A1A500 /* IJKVideoViewController.m */; };
+		E6A9B56517EDA72C00A1A500 /* IJKVideoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6A9B56317EDA72C00A1A500 /* IJKVideoViewController.xib */; };
 		E6F1D4BE1D38F29800E8665B /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F1D4BD1D38F29800E8665B /* libz.tbd */; };
 		E6F1D4C01D38F29D00E8665B /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F1D4BF1D38F29D00E8665B /* libbz2.tbd */; };
 		E6F524EB1B183A0700B69DC7 /* IJKDemoSampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6F524E91B183A0700B69DC7 /* IJKDemoSampleViewController.m */; };
@@ -130,9 +130,9 @@
 		E6903F1117EAF70200CFD954 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		E6903F1317EAF70200CFD954 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		E6903F1517EAF70200CFD954 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		E6A9B56117EDA72C00A1A500 /* IJKMoviePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IJKMoviePlayerViewController.h; sourceTree = "<group>"; };
-		E6A9B56217EDA72C00A1A500 /* IJKMoviePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IJKMoviePlayerViewController.m; sourceTree = "<group>"; };
-		E6A9B56317EDA72C00A1A500 /* IJKMoviePlayerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IJKMoviePlayerViewController.xib; sourceTree = "<group>"; };
+		E6A9B56117EDA72C00A1A500 /* IJKVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IJKVideoViewController.h; sourceTree = "<group>"; };
+		E6A9B56217EDA72C00A1A500 /* IJKVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IJKVideoViewController.m; sourceTree = "<group>"; };
+		E6A9B56317EDA72C00A1A500 /* IJKVideoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IJKVideoViewController.xib; sourceTree = "<group>"; };
 		E6D74F2918A5F94B00165BFD /* IJKMediaPlayer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IJKMediaPlayer.xcodeproj; path = ../IJKMediaPlayer/IJKMediaPlayer.xcodeproj; sourceTree = "<group>"; };
 		E6F1D4BD1D38F29800E8665B /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		E6F1D4BF1D38F29D00E8665B /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
@@ -272,9 +272,9 @@
 				E6F524EA1B183A0700B69DC7 /* IJKDemoSampleViewController.xib */,
 				E66F8DC917EEDD8B00354D80 /* IJKMediaControl.h */,
 				E66F8DCA17EEDD8B00354D80 /* IJKMediaControl.m */,
-				E6A9B56117EDA72C00A1A500 /* IJKMoviePlayerViewController.h */,
-				E6A9B56217EDA72C00A1A500 /* IJKMoviePlayerViewController.m */,
-				E6A9B56317EDA72C00A1A500 /* IJKMoviePlayerViewController.xib */,
+				E6A9B56117EDA72C00A1A500 /* IJKVideoViewController.h */,
+				E6A9B56217EDA72C00A1A500 /* IJKVideoViewController.m */,
+				E6A9B56317EDA72C00A1A500 /* IJKVideoViewController.xib */,
 				55E809EC1B146C1E003E98A5 /* IJKQRCodeScanViewController.h */,
 				55E809ED1B146C1E003E98A5 /* IJKQRCodeScanViewController.m */,
 				55E809F21B146DE8003E98A5 /* IJKQRCodeScanViewController.xib */,
@@ -391,7 +391,7 @@
 				E6903F1617EAF70200CFD954 /* Default-568h@2x.png in Resources */,
 				E67323A71B69E6F800CB9036 /* AppIcons.xcassets in Resources */,
 				E6166C9C17EDA4A20006B956 /* IJKMediaDemo-Prefix.pch in Resources */,
-				E6A9B56517EDA72C00A1A500 /* IJKMoviePlayerViewController.xib in Resources */,
+				E6A9B56517EDA72C00A1A500 /* IJKVideoViewController.xib in Resources */,
 				E6F524EC1B183A0700B69DC7 /* IJKDemoSampleViewController.xib in Resources */,
 				8C5755C022848426004F35E4 /* IJKMultiVideoViewController.xib in Resources */,
 				55E809E41B143C85003E98A5 /* IJKDemoMainViewController.xib in Resources */,
@@ -415,7 +415,7 @@
 				55E809E21B143C47003E98A5 /* IJKDemoMainViewController.m in Sources */,
 				E6903F1017EAF70200CFD954 /* IJKAppDelegate.m in Sources */,
 				E6F524EB1B183A0700B69DC7 /* IJKDemoSampleViewController.m in Sources */,
-				E6A9B56417EDA72C00A1A500 /* IJKMoviePlayerViewController.m in Sources */,
+				E6A9B56417EDA72C00A1A500 /* IJKVideoViewController.m in Sources */,
 				55E809F11B146C80003E98A5 /* Barcode.m in Sources */,
 				E66F8DCB17EEDD8B00354D80 /* IJKMediaControl.m in Sources */,
 				55E809EA1B145BC2003E98A5 /* IJKDemoInputURLViewController.m in Sources */,
@@ -472,7 +472,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -498,7 +498,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;

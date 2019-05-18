@@ -18,7 +18,7 @@
 #import "IJKDemoSampleViewController.h"
 
 #import "IJKCommon.h"
-#import "IJKMoviePlayerViewController.h"
+#import "IJKVideoViewController.h"
 
 @interface IJKDemoSampleViewController () <UITableViewDataSource, UITableViewDelegate>
 
