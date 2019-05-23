@@ -34,6 +34,7 @@
 #import "ijkioapplication.h"
 #import "FFMpegMonitor.h"
 #import "FFMpegOptions.h"
+#import "IJKMediaUrlOpenData.h"
 #include "string.h"
 
 
@@ -122,6 +123,15 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
     float _volume;
     BOOL  _muting;
     FFMpegMonitor *_monitor;
+    id<IJKMediaUrlOpenDelegate> _segmentOpenDelegate;
+    id<IJKMediaUrlOpenDelegate> _tcpOpenDelegate;
+    id<IJKMediaUrlOpenDelegate> _httpOpenDelegate;
+    id<IJKMediaUrlOpenDelegate> _liveOpenDelegate;
+    id<IJKMediaNativeInvokeDelegate> _nativeInvokeDelegate;
+
+    CGFloat _fpsInMeta;
+    CGFloat _fpsAtOutput;
+    BOOL _shouldShowHudView;
 }
 
 @synthesize view = _view;
@@ -145,7 +155,6 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
 
 @synthesize isDanmakuMediaAirPlay = _isDanmakuMediaAirPlay;
 
-@synthesize shouldShowHudView           = _shouldShowHudView;
 @synthesize isSeekBuffering = _isSeekBuffering;
 @synthesize isAudioSync = _isAudioSync;
 @synthesize isVideoSync = _isVideoSync;
@@ -198,6 +207,29 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
                                             int64_t elpased_time, int64_t total_duration))
 {
     ijkmp_io_stat_complete_register(cb);
+}
+
+-(id<IJKMediaUrlOpenDelegate>) segmentOpenDelegate
+{
+    return _segmentOpenDelegate;
+}
+
+-(id<IJKMediaUrlOpenDelegate>) tcpOpenDelegate
+{
+    return _tcpOpenDelegate;
+}
+-(id<IJKMediaUrlOpenDelegate>) httpOpenDelegate
+{
+    return _httpOpenDelegate;
+}
+-(id<IJKMediaUrlOpenDelegate>) liveOpenDelegate
+{
+    return _liveOpenDelegate;
+}
+
+-(id<IJKMediaNativeInvokeDelegate>) nativeInvokeDelegate
+{
+    return _nativeInvokeDelegate;
 }
 
 - (id)initWithContentURL:(NSURL *)aUrl
@@ -257,7 +289,7 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
         IJKFFIOStatCompleteRegister(IJKFFIOStatCompleteDebugCallback);
 #endif
         // init fields
-        _scalingMode = IJKMPMovieScalingModeAspectFit;
+        _scalingMode = MPMovieScalingModeAspectFit;
         _shouldAutoplay = YES;
         memset(&_asyncStat, 0, sizeof(_asyncStat));
         memset(&_cacheStat, 0, sizeof(_cacheStat));
@@ -383,7 +415,7 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
         // IJKFFIOStatCompleteRegister(IJKFFIOStatCompleteDebugCallback);
 
         // init fields
-        _scalingMode = IJKMPMovieScalingModeAspectFit;
+        _scalingMode = MPMovieScalingModeAspectFit;
         _shouldAutoplay = YES;
         memset(&_asyncStat, 0, sizeof(_asyncStat));
         memset(&_cacheStat, 0, sizeof(_cacheStat));
@@ -722,41 +754,41 @@ inline static int getPlayerOption(FFOptionCategory category)
 {
 }
 
-- (IJKMPMoviePlaybackState)playbackState
+- (MPMoviePlaybackState)playbackState
 {
     if (!_mediaPlayer)
         return NO;
 
-    IJKMPMoviePlaybackState mpState = IJKMPMoviePlaybackStateStopped;
+    MPMoviePlaybackState mpState = MPMoviePlaybackStateStopped;
     int state = ijkmp_get_state(_mediaPlayer);
     switch (state) {
         case MP_STATE_STOPPED:
         case MP_STATE_COMPLETED:
         case MP_STATE_ERROR:
         case MP_STATE_END:
-            mpState = IJKMPMoviePlaybackStateStopped;
+            mpState = MPMoviePlaybackStateStopped;
             break;
         case MP_STATE_IDLE:
         case MP_STATE_INITIALIZED:
         case MP_STATE_ASYNC_PREPARING:
         case MP_STATE_PAUSED:
-            mpState = IJKMPMoviePlaybackStatePaused;
+            mpState = MPMoviePlaybackStatePaused;
             break;
         case MP_STATE_PREPARED:
         case MP_STATE_STARTED: {
             if (_seeking)
-                mpState = IJKMPMoviePlaybackStateSeekingForward;
+                mpState = MPMoviePlaybackStateSeekingForward;
             else
-                mpState = IJKMPMoviePlaybackStatePlaying;
+                mpState = MPMoviePlaybackStatePlaying;
             break;
         }
     }
-    // IJKMPMoviePlaybackStatePlaying,
-    // IJKMPMoviePlaybackStatePaused,
-    // IJKMPMoviePlaybackStateStopped,
-    // IJKMPMoviePlaybackStateInterrupted,
-    // IJKMPMoviePlaybackStateSeekingForward,
-    // IJKMPMoviePlaybackStateSeekingBackward
+    // MPMoviePlaybackStatePlaying,
+    // MPMoviePlaybackStatePaused,
+    // MPMoviePlaybackStateStopped,
+    // MPMoviePlaybackStateInterrupted,
+    // MPMoviePlaybackStateSeekingForward,
+    // MPMoviePlaybackStateSeekingBackward
     return mpState;
 }
 
@@ -767,7 +799,7 @@ inline static int getPlayerOption(FFOptionCategory category)
 
     _seeking = YES;
     [[NSNotificationCenter defaultCenter]
-     postNotificationName:IJKMPMoviePlayerPlaybackStateDidChangeNotification
+     postNotificationName:MPMoviePlayerPlaybackStateDidChangeNotification
      object:self];
 
     _bufferingPosition = 0;
@@ -833,25 +865,25 @@ inline static int getPlayerOption(FFOptionCategory category)
 
     if (self->_naturalSize.width > 0 && self->_naturalSize.height > 0) {
         [[NSNotificationCenter defaultCenter]
-         postNotificationName:IJKMPMovieNaturalSizeAvailableNotification
+         postNotificationName:MPMovieNaturalSizeAvailableNotification
                        object:self];
     }
 }
 
-- (void)setScalingMode: (IJKMPMovieScalingMode) aScalingMode
+- (void)setScalingMode: (MPMovieScalingMode) aScalingMode
 {
-    IJKMPMovieScalingMode newScalingMode = aScalingMode;
+    MPMovieScalingMode newScalingMode = aScalingMode;
     switch (aScalingMode) {
-        case IJKMPMovieScalingModeNone:
+        case MPMovieScalingModeNone:
             [_view setContentMode:UIViewContentModeCenter];
             break;
-        case IJKMPMovieScalingModeAspectFit:
+        case MPMovieScalingModeAspectFit:
             [_view setContentMode:UIViewContentModeScaleAspectFit];
             break;
-        case IJKMPMovieScalingModeAspectFill:
+        case MPMovieScalingModeAspectFill:
             [_view setContentMode:UIViewContentModeScaleAspectFill];
             break;
-        case IJKMPMovieScalingModeFill:
+        case MPMovieScalingModeFill:
             [_view setContentMode:UIViewContentModeScaleToFill];
             break;
         default:
@@ -862,7 +894,7 @@ inline static int getPlayerOption(FFOptionCategory category)
 }
 
 // deprecated, for MPMoviePlayerController compatiable
-- (UIImage *)thumbnailImageAtTime:(NSTimeInterval)playbackTime timeOption:(IJKMPMovieTimeOption)option
+- (UIImage *)thumbnailImageAtTime:(NSTimeInterval)playbackTime timeOption:(MPMovieTimeOption)option
 {
     return nil;
 }
@@ -1145,14 +1177,14 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
             [self setScreenOn:NO];
 
             [[NSNotificationCenter defaultCenter]
-             postNotificationName:IJKMPMoviePlayerPlaybackStateDidChangeNotification
+             postNotificationName:MPMoviePlayerPlaybackStateDidChangeNotification
              object:self];
 
             [[NSNotificationCenter defaultCenter]
-                postNotificationName:IJKMPMoviePlayerPlaybackDidFinishNotification
+                postNotificationName:MPMoviePlayerPlaybackDidFinishNotification
                 object:self
                 userInfo:@{
-                    IJKMPMoviePlayerPlaybackDidFinishReasonUserInfoKey: @(IJKMPMovieFinishReasonPlaybackError),
+                    MPMoviePlayerPlaybackDidFinishReasonUserInfoKey: @(MPMovieFinishReasonPlaybackError),
                     @"error": @(avmsg->arg1)}];
             break;
         }
@@ -1255,10 +1287,10 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
             _isPreparedToPlay = YES;
 
             [[NSNotificationCenter defaultCenter] postNotificationName:MPMediaPlaybackIsPreparedToPlayDidChangeNotification object:self];
-            _loadState = IJKMPMovieLoadStatePlayable | IJKMPMovieLoadStatePlaythroughOK;
+            _loadState = MPMovieLoadStatePlayable | MPMovieLoadStatePlaythroughOK;
 
             [[NSNotificationCenter defaultCenter]
-                    postNotificationName:IJKMPMoviePlayerLoadStateDidChangeNotification
+                    postNotificationName:MPMoviePlayerLoadStateDidChangeNotification
                                   object:self];
 
             break;
@@ -1268,13 +1300,13 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
             [self setScreenOn:NO];
 
             [[NSNotificationCenter defaultCenter]
-             postNotificationName:IJKMPMoviePlayerPlaybackStateDidChangeNotification
+             postNotificationName:MPMoviePlayerPlaybackStateDidChangeNotification
              object:self];
 
             [[NSNotificationCenter defaultCenter]
-             postNotificationName:IJKMPMoviePlayerPlaybackDidFinishNotification
+             postNotificationName:MPMoviePlayerPlaybackDidFinishNotification
              object:self
-             userInfo:@{IJKMPMoviePlayerPlaybackDidFinishReasonUserInfoKey: @(IJKMPMovieFinishReasonPlaybackEnded)}];
+             userInfo:@{MPMoviePlayerPlaybackDidFinishReasonUserInfoKey: @(MPMovieFinishReasonPlaybackEnded)}];
             break;
         }
         case FFP_MSG_VIDEO_SIZE_CHANGED:
@@ -1298,11 +1330,11 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
 
             _monitor.lastPrerollStartTick = (int64_t)SDL_GetTickHR();
 
-            _loadState = IJKMPMovieLoadStateStalled;
+            _loadState = MPMovieLoadStateStalled;
             _isSeekBuffering = avmsg->arg1;
 
             [[NSNotificationCenter defaultCenter]
-             postNotificationName:IJKMPMoviePlayerLoadStateDidChangeNotification
+             postNotificationName:MPMoviePlayerLoadStateDidChangeNotification
                            object:self];
             _isSeekBuffering = 0;
             break;
@@ -1312,14 +1344,14 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
 
             _monitor.lastPrerollDuration = (int64_t)SDL_GetTickHR() - _monitor.lastPrerollStartTick;
 
-            _loadState = IJKMPMovieLoadStatePlayable | IJKMPMovieLoadStatePlaythroughOK;
+            _loadState = MPMovieLoadStatePlayable | MPMovieLoadStatePlaythroughOK;
             _isSeekBuffering = avmsg->arg1;
 
             [[NSNotificationCenter defaultCenter]
-             postNotificationName:IJKMPMoviePlayerLoadStateDidChangeNotification
+             postNotificationName:MPMoviePlayerLoadStateDidChangeNotification
              object:self];
             [[NSNotificationCenter defaultCenter]
-             postNotificationName:IJKMPMoviePlayerPlaybackStateDidChangeNotification
+             postNotificationName:MPMoviePlayerPlaybackStateDidChangeNotification
              object:self];
             _isSeekBuffering = 0;
             break;
@@ -1338,16 +1370,16 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
             break;
         case FFP_MSG_PLAYBACK_STATE_CHANGED:
             [[NSNotificationCenter defaultCenter]
-             postNotificationName:IJKMPMoviePlayerPlaybackStateDidChangeNotification
+             postNotificationName:MPMoviePlayerPlaybackStateDidChangeNotification
              object:self];
             break;
         case FFP_MSG_SEEK_COMPLETE: {
             NSLog(@"FFP_MSG_SEEK_COMPLETE:\n");
             [[NSNotificationCenter defaultCenter]
-             postNotificationName:IJKMPMoviePlayerDidSeekCompleteNotification
+             postNotificationName:MPMoviePlayerDidSeekCompleteNotification
              object:self
-             userInfo:@{IJKMPMoviePlayerDidSeekCompleteTargetKey: @(avmsg->arg1),
-                        IJKMPMoviePlayerDidSeekCompleteErrorKey: @(avmsg->arg2)}];
+             userInfo:@{MPMoviePlayerDidSeekCompleteTargetKey: @(avmsg->arg1),
+                        MPMoviePlayerDidSeekCompleteErrorKey: @(avmsg->arg2)}];
             _seeking = NO;
             break;
         }
@@ -1355,7 +1387,7 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
             _isVideoToolboxOpen = avmsg->arg1;
             NSLog(@"FFP_MSG_VIDEO_DECODER_OPEN: %@\n", _isVideoToolboxOpen ? @"true" : @"false");
             [[NSNotificationCenter defaultCenter]
-             postNotificationName:IJKMPMoviePlayerVideoDecoderOpenNotification
+             postNotificationName:MPMoviePlayerVideoDecoderOpenNotification
              object:self];
             break;
         }
@@ -1363,65 +1395,65 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
             NSLog(@"FFP_MSG_VIDEO_RENDERING_START:\n");
             _monitor.firstVideoFrameLatency = (int64_t)SDL_GetTickHR() - _monitor.prepareStartTick;
             [[NSNotificationCenter defaultCenter]
-             postNotificationName:IJKMPMoviePlayerFirstVideoFrameRenderedNotification
+             postNotificationName:MPMoviePlayerFirstVideoFrameRenderedNotification
              object:self];
             break;
         }
         case FFP_MSG_AUDIO_RENDERING_START: {
             NSLog(@"FFP_MSG_AUDIO_RENDERING_START:\n");
             [[NSNotificationCenter defaultCenter]
-             postNotificationName:IJKMPMoviePlayerFirstAudioFrameRenderedNotification
+             postNotificationName:MPMoviePlayerFirstAudioFrameRenderedNotification
              object:self];
             break;
         }
         case FFP_MSG_AUDIO_DECODED_START: {
             NSLog(@"FFP_MSG_AUDIO_DECODED_START:\n");
             [[NSNotificationCenter defaultCenter]
-             postNotificationName:IJKMPMoviePlayerFirstAudioFrameDecodedNotification
+             postNotificationName:MPMoviePlayerFirstAudioFrameDecodedNotification
              object:self];
             break;
         }
         case FFP_MSG_VIDEO_DECODED_START: {
             NSLog(@"FFP_MSG_VIDEO_DECODED_START:\n");
             [[NSNotificationCenter defaultCenter]
-             postNotificationName:IJKMPMoviePlayerFirstVideoFrameDecodedNotification
+             postNotificationName:MPMoviePlayerFirstVideoFrameDecodedNotification
              object:self];
             break;
         }
         case FFP_MSG_OPEN_INPUT: {
             NSLog(@"FFP_MSG_OPEN_INPUT:\n");
             [[NSNotificationCenter defaultCenter]
-             postNotificationName:IJKMPMoviePlayerOpenInputNotification
+             postNotificationName:MPMoviePlayerOpenInputNotification
              object:self];
             break;
         }
         case FFP_MSG_FIND_STREAM_INFO: {
             NSLog(@"FFP_MSG_FIND_STREAM_INFO:\n");
             [[NSNotificationCenter defaultCenter]
-             postNotificationName:IJKMPMoviePlayerFindStreamInfoNotification
+             postNotificationName:MPMoviePlayerFindStreamInfoNotification
              object:self];
             break;
         }
         case FFP_MSG_COMPONENT_OPEN: {
             NSLog(@"FFP_MSG_COMPONENT_OPEN:\n");
             [[NSNotificationCenter defaultCenter]
-             postNotificationName:IJKMPMoviePlayerComponentOpenNotification
+             postNotificationName:MPMoviePlayerComponentOpenNotification
              object:self];
             break;
         }
         case FFP_MSG_ACCURATE_SEEK_COMPLETE: {
             NSLog(@"FFP_MSG_ACCURATE_SEEK_COMPLETE:\n");
             [[NSNotificationCenter defaultCenter]
-             postNotificationName:IJKMPMoviePlayerAccurateSeekCompleteNotification
+             postNotificationName:MPMoviePlayerAccurateSeekCompleteNotification
              object:self
-             userInfo:@{IJKMPMoviePlayerDidAccurateSeekCompleteCurPos: @(avmsg->arg1)}];
+             userInfo:@{MPMoviePlayerDidAccurateSeekCompleteCurPos: @(avmsg->arg1)}];
             break;
         }
         case FFP_MSG_VIDEO_SEEK_RENDERING_START: {
             NSLog(@"FFP_MSG_VIDEO_SEEK_RENDERING_START:\n");
             _isVideoSync = avmsg->arg1;
             [[NSNotificationCenter defaultCenter]
-             postNotificationName:IJKMPMoviePlayerSeekVideoStartNotification
+             postNotificationName:MPMoviePlayerSeekVideoStartNotification
              object:self];
             _isVideoSync = 0;
             break;
@@ -1430,7 +1462,7 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
             NSLog(@"FFP_MSG_AUDIO_SEEK_RENDERING_START:\n");
             _isAudioSync = avmsg->arg1;
             [[NSNotificationCenter defaultCenter]
-             postNotificationName:IJKMPMoviePlayerSeekAudioStartNotification
+             postNotificationName:MPMoviePlayerSeekAudioStartNotification
              object:self];
             _isAudioSync = 0;
             break;
@@ -1495,7 +1527,7 @@ static int onInjectIOControl(FFMpegPlayerController *mpc, id<IJKMediaUrlOpenDele
 
     IJKMediaUrlOpenData *openData =
     [[IJKMediaUrlOpenData alloc] initWithUrl:urlString
-                                       event:(IJKMediaEvent)type
+                                       event:(MediaEvent)type
                                 segmentIndex:realData->segment_index
                                 retryCounter:realData->retry_counter];
 
@@ -1565,7 +1597,7 @@ static int onInjectTcpIOControl(FFMpegPlayerController *mpc, id<IJKMediaUrlOpenD
 
     IJKMediaUrlOpenData *openData =
     [[IJKMediaUrlOpenData alloc] initWithUrl:urlString
-                                       event:(IJKMediaEvent)type
+                                       event:(MediaEvent)type
                                 segmentIndex:0
                                 retryCounter:0];
     openData.fd = realData->fd;
@@ -1621,7 +1653,7 @@ static int onInjectOnHttpEvent(FFMpegPlayerController *mpc, int type, void *data
     NSString     *host = monitor.httpHost;
     int64_t       elapsed = 0;
 
-    id<IJKMediaNativeInvokeDelegate> delegate = mpc.nativeInvokeDelegate;
+    id<IJKMediaNativeInvokeDelegate> delegate = [mpc nativeInvokeDelegate];
 
     switch (type) {
         case AVAPP_EVENT_WILL_HTTP_OPEN:
@@ -1703,19 +1735,19 @@ static int ijkff_inject_callback(void *opaque, int message, void *data, size_t d
 
     switch (message) {
         case AVAPP_CTRL_WILL_CONCAT_SEGMENT_OPEN:
-            return onInjectIOControl(mpc, mpc.segmentOpenDelegate, message, data, data_size);
+            return onInjectIOControl(mpc, [mpc segmentOpenDelegate], message, data, data_size);
         case AVAPP_CTRL_WILL_TCP_OPEN:
-            return onInjectTcpIOControl(mpc, mpc.tcpOpenDelegate, message, data, data_size);
+            return onInjectTcpIOControl(mpc, [mpc tcpOpenDelegate], message, data, data_size);
         case AVAPP_CTRL_WILL_HTTP_OPEN:
-            return onInjectIOControl(mpc, mpc.httpOpenDelegate, message, data, data_size);
+            return onInjectIOControl(mpc, [mpc httpOpenDelegate], message, data, data_size);
         case AVAPP_CTRL_WILL_LIVE_OPEN:
-            return onInjectIOControl(mpc, mpc.liveOpenDelegate, message, data, data_size);
+            return onInjectIOControl(mpc, [mpc liveOpenDelegate], message, data, data_size);
         case AVAPP_EVENT_ASYNC_STATISTIC:
             return onInjectAsyncStatistic(mpc, message, data, data_size);
         case IJKIOAPP_EVENT_CACHE_STATISTIC:
             return onInectIJKIOStatistic(mpc, message, data, data_size);
         case AVAPP_CTRL_DID_TCP_OPEN:
-            return onInjectTcpIOControl(mpc, mpc.tcpOpenDelegate, message, data, data_size);
+            return onInjectTcpIOControl(mpc, [mpc tcpOpenDelegate], message, data, data_size);
         case AVAPP_EVENT_WILL_HTTP_OPEN:
         case AVAPP_EVENT_DID_HTTP_OPEN:
         case AVAPP_EVENT_WILL_HTTP_SEEK:
@@ -1770,7 +1802,7 @@ static int ijkff_inject_callback(void *opaque, int message, void *data, size_t d
             scale = 1.0f;
         _glView.scaleFactor = scale;
     }
-     [[NSNotificationCenter defaultCenter] postNotificationName:IJKMPMoviePlayerIsAirPlayVideoActiveDidChangeNotification
+     [[NSNotificationCenter defaultCenter] postNotificationName:MPMoviePlayerIsAirPlayVideoActiveDidChangeNotification
                                                          object:nil
                                                        userInfo:nil];
 }
@@ -1870,8 +1902,8 @@ static int ijkff_inject_callback(void *opaque, int message, void *data, size_t d
         case AVAudioSessionInterruptionTypeBegan: {
             NSLog(@"FFMpegPlayerController:audioSessionInterrupt: begin\n");
             switch (self.playbackState) {
-                case IJKMPMoviePlaybackStatePaused:
-                case IJKMPMoviePlaybackStateStopped:
+                case MPMoviePlaybackStatePaused:
+                case MPMoviePlaybackStateStopped:
                     _playingBeforeInterruption = NO;
                     break;
                 default:

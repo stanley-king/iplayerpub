@@ -1,5 +1,4 @@
 #import "IMediaPlayback.h"
-#import "ISDLGLView.h"
 
 typedef enum LogLevel {
     kLOG_UNKNOWN = 0,
@@ -17,23 +16,8 @@ typedef enum LogLevel {
 
 - (id)initWithContentURL:(NSURL *)aUrl;
 - (id)initWithContentURLString:(NSString *)aUrlString;
-- (id)initWithMoreContent:(NSURL *)aUrl
-               withGLView:(UIView<ISDLGLView> *)glView;
-- (id)initWithMoreContentString:(NSString *)aUrlString
-                     withGLView:(UIView<ISDLGLView> *)glView;
 
-- (void)setHudValue:(NSString *)value forKey:(NSString *)key;
 + (void)setLogReport:(BOOL)preferLogReport;
 + (void)setLogLevel:(LogLevel)logLevel;
-
-@property(nonatomic, readonly) CGFloat fpsInMeta;
-@property(nonatomic, readonly) CGFloat fpsAtOutput;
-@property(nonatomic) BOOL shouldShowHudView;
-
-@property (nonatomic, retain) id<IJKMediaUrlOpenDelegate> segmentOpenDelegate;
-@property (nonatomic, retain) id<IJKMediaUrlOpenDelegate> tcpOpenDelegate;
-@property (nonatomic, retain) id<IJKMediaUrlOpenDelegate> httpOpenDelegate;
-@property (nonatomic, retain) id<IJKMediaUrlOpenDelegate> liveOpenDelegate;
-@property (nonatomic, retain) id<IJKMediaNativeInvokeDelegate> nativeInvokeDelegate;
 
 @end

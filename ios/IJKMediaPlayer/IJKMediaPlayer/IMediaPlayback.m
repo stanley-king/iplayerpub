@@ -22,38 +22,39 @@
  */
 
 #import "IMediaPlayback.h"
+#import "IJKMediaUrlOpenData.h"
 
 NSString *const MPMediaPlaybackIsPreparedToPlayDidChangeNotification = @"MPMediaPlaybackIsPreparedToPlayDidChangeNotification";
 
-NSString *const IJKMPMoviePlayerPlaybackDidFinishNotification = @"IJKMPMoviePlayerPlaybackDidFinishNotification";
-NSString *const IJKMPMoviePlayerPlaybackDidFinishReasonUserInfoKey =
-    @"IJKMPMoviePlayerPlaybackDidFinishReasonUserInfoKey";
-NSString *const IJKMPMoviePlayerPlaybackStateDidChangeNotification = @"IJKMPMoviePlayerPlaybackStateDidChangeNotification";
-NSString *const IJKMPMoviePlayerLoadStateDidChangeNotification = @"IJKMPMoviePlayerLoadStateDidChangeNotification";
+NSString *const MPMoviePlayerPlaybackDidFinishNotification = @"MPMoviePlayerPlaybackDidFinishNotification";
+NSString *const MPMoviePlayerPlaybackDidFinishReasonUserInfoKey =
+    @"MPMoviePlayerPlaybackDidFinishReasonUserInfoKey";
+NSString *const MPMoviePlayerPlaybackStateDidChangeNotification = @"MPMoviePlayerPlaybackStateDidChangeNotification";
+NSString *const MPMoviePlayerLoadStateDidChangeNotification = @"MPMoviePlayerLoadStateDidChangeNotification";
 
-NSString *const IJKMPMoviePlayerIsAirPlayVideoActiveDidChangeNotification = @"IJKMPMoviePlayerIsAirPlayVideoActiveDidChangeNotification";
+NSString *const MPMoviePlayerIsAirPlayVideoActiveDidChangeNotification = @"MPMoviePlayerIsAirPlayVideoActiveDidChangeNotification";
 
-NSString *const IJKMPMovieNaturalSizeAvailableNotification = @"IJKMPMovieNaturalSizeAvailableNotification";
+NSString *const MPMovieNaturalSizeAvailableNotification = @"MPMovieNaturalSizeAvailableNotification";
 
-NSString *const IJKMPMoviePlayerVideoDecoderOpenNotification = @"IJKMPMoviePlayerVideoDecoderOpenNotification";
+NSString *const MPMoviePlayerVideoDecoderOpenNotification = @"MPMoviePlayerVideoDecoderOpenNotification";
 
-NSString *const IJKMPMoviePlayerFirstVideoFrameRenderedNotification = @"IJKMPMoviePlayerFirstVideoFrameRenderedNotification";
-NSString *const IJKMPMoviePlayerFirstAudioFrameRenderedNotification = @"IJKMPMoviePlayerFirstAudioFrameRenderedNotification";
-NSString *const IJKMPMoviePlayerFirstAudioFrameDecodedNotification  = @"IJKMPMoviePlayerFirstAudioFrameDecodedNotification";
-NSString *const IJKMPMoviePlayerFirstVideoFrameDecodedNotification  = @"IJKMPMoviePlayerFirstVideoFrameDecodedNotification";
-NSString *const IJKMPMoviePlayerOpenInputNotification               = @"IJKMPMoviePlayerOpenInputNotification";
-NSString *const IJKMPMoviePlayerFindStreamInfoNotification          = @"IJKMPMoviePlayerFindStreamInfoNotification";
-NSString *const IJKMPMoviePlayerComponentOpenNotification           = @"IJKMPMoviePlayerComponentOpenNotification";
+NSString *const MPMoviePlayerFirstVideoFrameRenderedNotification = @"MPMoviePlayerFirstVideoFrameRenderedNotification";
+NSString *const MPMoviePlayerFirstAudioFrameRenderedNotification = @"MPMoviePlayerFirstAudioFrameRenderedNotification";
+NSString *const MPMoviePlayerFirstAudioFrameDecodedNotification  = @"MPMoviePlayerFirstAudioFrameDecodedNotification";
+NSString *const MPMoviePlayerFirstVideoFrameDecodedNotification  = @"MPMoviePlayerFirstVideoFrameDecodedNotification";
+NSString *const MPMoviePlayerOpenInputNotification               = @"MPMoviePlayerOpenInputNotification";
+NSString *const MPMoviePlayerFindStreamInfoNotification          = @"MPMoviePlayerFindStreamInfoNotification";
+NSString *const MPMoviePlayerComponentOpenNotification           = @"MPMoviePlayerComponentOpenNotification";
 
-NSString *const IJKMPMoviePlayerAccurateSeekCompleteNotification = @"IJKMPMoviePlayerAccurateSeekCompleteNotification";
+NSString *const MPMoviePlayerAccurateSeekCompleteNotification = @"MPMoviePlayerAccurateSeekCompleteNotification";
 
-NSString *const IJKMPMoviePlayerDidSeekCompleteNotification = @"IJKMPMoviePlayerDidSeekCompleteNotification";
-NSString *const IJKMPMoviePlayerDidSeekCompleteTargetKey = @"IJKMPMoviePlayerDidSeekCompleteTargetKey";
-NSString *const IJKMPMoviePlayerDidSeekCompleteErrorKey = @"IJKMPMoviePlayerDidSeekCompleteErrorKey";
-NSString *const IJKMPMoviePlayerDidAccurateSeekCompleteCurPos = @"IJKMPMoviePlayerDidAccurateSeekCompleteCurPos";
+NSString *const MPMoviePlayerDidSeekCompleteNotification = @"MPMoviePlayerDidSeekCompleteNotification";
+NSString *const MPMoviePlayerDidSeekCompleteTargetKey = @"MPMoviePlayerDidSeekCompleteTargetKey";
+NSString *const MPMoviePlayerDidSeekCompleteErrorKey = @"MPMoviePlayerDidSeekCompleteErrorKey";
+NSString *const MPMoviePlayerDidAccurateSeekCompleteCurPos = @"MPMoviePlayerDidAccurateSeekCompleteCurPos";
 
-NSString *const IJKMPMoviePlayerSeekAudioStartNotification  = @"IJKMPMoviePlayerSeekAudioStartNotification";
-NSString *const IJKMPMoviePlayerSeekVideoStartNotification  = @"IJKMPMoviePlayerSeekVideoStartNotification";
+NSString *const MPMoviePlayerSeekAudioStartNotification  = @"MPMoviePlayerSeekAudioStartNotification";
+NSString *const MPMoviePlayerSeekVideoStartNotification  = @"MPMoviePlayerSeekVideoStartNotification";
 
 @implementation IJKMediaUrlOpenData {
     NSString *_url;
@@ -62,7 +63,7 @@ NSString *const IJKMPMoviePlayerSeekVideoStartNotification  = @"IJKMPMoviePlayer
 }
 
 - (id)initWithUrl:(NSString *)url
-            event:(IJKMediaEvent)event
+            event:(MediaEvent)event
      segmentIndex:(int)segmentIndex
      retryCounter:(int)retryCounter
 {

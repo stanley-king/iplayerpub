@@ -48,11 +48,8 @@
 
     {
 //        IJKVideoViewController *vc = [[IJKVideoViewController alloc] initWithURL:self.url];
-
         NSString* strurl = @"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/gear2/prog_index.m3u8";
-
         NSURL* url  = [NSURL URLWithString:strurl];
-
         IJKVideoViewController *vc = [[IJKVideoViewController alloc] initWithURL:url];
         [self addChildViewController:vc];
         [self.view addSubview:vc.view];
@@ -62,8 +59,11 @@
         frame.origin.y = 0;
         frame.size.width = frame.size.width / 2.0;
         vc.view.frame = frame;
-
     }
+
+
+
+
 }
 
 @end
