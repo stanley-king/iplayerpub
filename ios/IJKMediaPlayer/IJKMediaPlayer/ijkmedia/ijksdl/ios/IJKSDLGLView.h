@@ -29,6 +29,7 @@
 #include "ijksdl/ijksdl_vout.h"
 
 @interface IJKSDLGLView : UIView <ISDLGLView>
+//@interface IJKSDLGLView : NSObject <ISDLGLView>
 
 - (id) initWithFrame:(CGRect)frame;
 - (void) display: (SDL_VoutOverlay *) overlay;
